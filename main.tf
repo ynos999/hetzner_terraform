@@ -97,7 +97,7 @@ resource "hcloud_server" "worker2" {
 
   network {
     network_id = hcloud_network.k8s_net.id
-    ip         = "10.10.1.20"
+    ip         = "10.10.1.30"
   }
 
 }
