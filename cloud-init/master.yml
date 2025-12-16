@@ -1,0 +1,13 @@
+#cloud-config
+users:
+  - name: ${ssh_user}             # Dinamiski iestatīts Terraform
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ${ssh_public_key}         # Dinamiski iestatīta Terraform publiskā atslēga
+
+packages:
+  - apt-transport-https
+  - curl
+  - ca-certificates
+  - gnupg

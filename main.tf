@@ -11,10 +11,7 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
-variable "hcloud_token" {}
-variable "ssh_public_key" {
-  default = "~/.ssh/id_rsa.pub"
-}
+
 
 # ───────────────────────────────
 # Privātais tīkls
@@ -69,6 +66,11 @@ resource "hcloud_server" "master" {
     ip         = "10.10.1.10"
   }
 
+user_data = templatefile("cloud-init/master.yml", {
+  ssh_user       = var.ssh_user
+  ssh_public_key = file(var.ssh_public_key)
+})
+
 }
 
 # ───────────────────────────────
@@ -86,6 +88,11 @@ resource "hcloud_server" "worker1" {
     ip         = "10.10.1.20"
   }
 
+user_data = templatefile("cloud-init/worker.yml", {
+  ssh_user       = var.ssh_user
+  ssh_public_key = file(var.ssh_public_key)
+})
+
 }
 
 resource "hcloud_server" "worker2" {
@@ -99,5 +106,10 @@ resource "hcloud_server" "worker2" {
     network_id = hcloud_network.k8s_net.id
     ip         = "10.10.1.30"
   }
+
+user_data = templatefile("cloud-init/worker.yml", {
+  ssh_user       = var.ssh_user
+  ssh_public_key = file(var.ssh_public_key)
+})
 
 }
